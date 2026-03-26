@@ -1,0 +1,31 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>icons/alarm-on-off.svg</file>
+        <file>icons/alarm-on-on.svg</file>
+        <file>icons/alarm-off-off.svg</file>
+        <file>icons/alarm-off-on.svg</file>
+        <file>icons/arrow-right-off.svg</file>
+        <file>icons/arrow-right-on.svg</file>
+        <file>icons/x-icon-off.svg</file>
+        <file>icons/x-icon-on.svg</file>
+        <file>icons/minus-off.svg</file>
+        <file>icons/minus-on.svg</file>
+        <file>icons/ok-off.svg</file>
+        <file>icons/ok-on.svg</file>
+        <file>icons/plus-off.svg</file>
+        <file>icons/plus-on.svg</file>
+        <file>icons/volume-minus-off.svg</file>
+        <file>icons/volume-minus-on.svg</file>
+        <file>icons/volume-plus-off.svg</file>
+        <file>icons/volume-plus-on.svg</file>
+        <file>icons/volume-0.svg</file>
+        <file>icons/volume-1.svg</file>
+        <file>icons/volume-2.svg</file>
+        <file>icons/volume-3.svg</file>
+        <file>icons/settings-off.svg</file>
+        <file>icons/settings-on.svg</file>
+        <file>icons/sf3.svg</file>
+        <file>icons/radioparadise.png</file>
+        <file>icons/flux80.png</file>
+    </qresource>
+</RCC>
