@@ -275,14 +275,14 @@ public:
 "    border-radius: 10px;\n"
 "    border-color: rgb(230, 225, 201);\n"
 "    padding: 6px;\n"
-"	image: url(:/icons/icons/wlan.png);\n"
+"	image: url(:/icons/icons/wlan.svg);\n"
 "}\n"
 "\n"
 "QPushButton:pressed {\n"
 "    border-style: inset;\n"
 "	border-color: rgb(172, 147,98);\n"
 "\n"
-"	image: url(:/icons/icons/wlan.png);\n"
+"	image: url(:/icons/icons/wlan.svg);\n"
 "}"));
 
         horizontalLayout_2->addWidget(pushButtonWlan);

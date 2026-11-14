@@ -409,14 +409,14 @@ QPushButton:pressed {
     border-radius: 10px;
     border-color: rgb(230, 225, 201);
     padding: 6px;
-	image: url(:/icons/icons/wlan.png);
+	image: url(:/icons/icons/wlan.svg);
 }
 
 QPushButton:pressed {
     border-style: inset;
 	border-color: rgb(172, 147,98);
 
-	image: url(:/icons/icons/wlan.png);
+	image: url(:/icons/icons/wlan.svg);
 }</string>
        </property>
        <property name="text">

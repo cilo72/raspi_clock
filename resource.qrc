@@ -28,6 +28,7 @@
         <file>icons/radioparadise.png</file>
         <file>icons/flux80.png</file>
         <file>icons/wlan.png</file>
+        <file>icons/wlan.svg</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>
