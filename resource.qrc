@@ -27,5 +27,7 @@
         <file>icons/sf3.svg</file>
         <file>icons/radioparadise.png</file>
         <file>icons/flux80.png</file>
+        <file>icons/wlan.png</file>
     </qresource>
+    <qresource prefix="/"/>
 </RCC>

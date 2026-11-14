@@ -2,6 +2,7 @@
 #define FORMMAIN_H
 
 #include <QWidget>
+#include <QLabel>
 #include <QTimer>
 #include <QTime>
 #include <QtMultimedia/QMediaPlayer>
@@ -17,6 +18,7 @@ class FormMain : public QWidget
 public:
     explicit FormMain(QWidget *parent = nullptr);
     ~FormMain();
+    void setWifiStatus(int strength, const QString &status);
     const QTime & alarmTime() const { return alarmTime_; }
     int volume() const { return volume_; }
     const QString & station() const { return station_; }
@@ -31,6 +33,7 @@ signals:
     void onSettingsRequest();
 private:
     Ui::FormMain *ui;
+    QLabel *wifiStatus_;
     QTimer * timer_;
     QTimer * timerPlayer_;
     QMediaPlayer * player_;

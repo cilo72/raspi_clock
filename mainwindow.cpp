@@ -7,8 +7,21 @@ MainWindow::MainWindow(QWidget *parent)
     , formMain_(new FormMain)
     , formSetAlarmTime_(new FormSetAlarmTime)
     , formSettings_(new FormSettings)
+    , wifiManager_(new WifiManager(this))
+    , formWifi_(new FormWifi(wifiManager_))
 {
     ui->setupUi(this);
+    ui->stackedWidget->addWidget(formWifi_);
+    connect(formSettings_, &FormSettings::onWifiRequest, this, [this] {
+        formWifi_->init();
+        ui->stackedWidget->setCurrentWidget(formWifi_);
+    });
+    connect(formWifi_, &FormWifi::onWifiExit, this, [this] {
+        ui->stackedWidget->setCurrentWidget(ui->pageSettings);
+    });
+    connect(wifiManager_, &WifiManager::changed, this, [this] {
+        formMain_->setWifiStatus(wifiManager_->strength(), wifiManager_->status());
+    });
     ui->stackedWidget->setCurrentWidget(ui->pageMain);
 
     ui->pageMain->layout()->addWidget(formMain_);

@@ -1,6 +1,7 @@
 #include "formsettings.h"
 #include "ui_formsettings.h"
 #include "clock.h"
+#include <QPushButton>
 
 static const char * styleSheetVolume = R"V0G0N(
 QLabel {
@@ -23,6 +24,7 @@ FormSettings::FormSettings(QWidget *parent)
 {
     ui->setupUi(this);
     incrementVolume();
+    connect(ui->pushButtonWlan, &QPushButton::clicked, this, &FormSettings::onWifiRequest);
 }
 
 FormSettings::~FormSettings()
@@ -155,3 +157,4 @@ void FormSettings::on_pushButtonRpMellowMix_clicked()
     station_ = Clock::stationRpMellowMix();
     emit onPlayStart(station_);
 }
+

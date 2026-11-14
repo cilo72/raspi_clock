@@ -381,6 +381,50 @@ QPushButton:pressed {
       </widget>
      </item>
      <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonWlan">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: rgb(99, 69, 44);
+    border-style: outset;
+    border-width: 3px;
+    border-radius: 10px;
+    border-color: rgb(230, 225, 201);
+    padding: 6px;
+	image: url(:/icons/icons/wlan.png);
+}
+
+QPushButton:pressed {
+    border-style: inset;
+	border-color: rgb(172, 147,98);
+
+	image: url(:/icons/icons/wlan.png);
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>

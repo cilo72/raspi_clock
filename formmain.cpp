@@ -1,6 +1,8 @@
 #include "formmain.h"
 #include "ui_formmain.h"
 #include "clock.h"
+#include <QPainter>
+#include <QPixmap>
 
 static const char * styleSheetPushButtonSetAlarmOn = R"V0G0N(
 QPushButton {
@@ -78,6 +80,10 @@ FormMain::FormMain(QWidget *parent)
     volume_    = Clock::readSetting(KEY_VOLUME, volume_).toInt();
     station_   = Clock::readSetting(KEY_STATION, station_).toString();
     ui->setupUi(this);
+    wifiStatus_ = new QLabel(this);
+    wifiStatus_->setFixedSize(88, 60);
+    ui->horizontalLayout_2->insertWidget(1, wifiStatus_);
+    setWifiStatus(-1, tr("WLAN wird geprüft …"));
     connect(timer_, &QTimer::timeout, this, &FormMain::timeout);
     timer_->start(1000);
 
@@ -192,4 +198,21 @@ void FormMain::onSettingsDone(int volume, QString station)
 
     Clock::writeSetting(KEY_VOLUME, volume_);
     Clock::writeSetting(KEY_STATION, station_);
+}
+void FormMain::setWifiStatus(int strength, const QString &status)
+{
+    QPixmap pixmap(88, 60);
+    pixmap.fill(Qt::transparent);
+    QPainter painter(&pixmap);
+    painter.setRenderHint(QPainter::Antialiasing);
+    const int bars = strength < 0 ? 0 : qMax(1, (strength + 24) / 25);
+    for (int i = 0; i < 4; ++i) {
+        painter.setBrush(i < bars ? QColor(230, 225, 201) : QColor(135, 108, 75));
+        painter.setPen(Qt::NoPen);
+        painter.drawRoundedRect(8 + i * 18, 34 - i * 7, 12, 10 + i * 7, 2, 2);
+    }
+    painter.setPen(QColor(230, 225, 201));
+    painter.drawText(QRect(0, 44, 88, 16), Qt::AlignCenter, strength < 0 ? tr("WLAN —") : QString::number(strength) + " %");
+    wifiStatus_->setPixmap(pixmap);
+    wifiStatus_->setToolTip(status);
 }

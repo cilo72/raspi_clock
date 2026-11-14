@@ -4,6 +4,7 @@
 #include "formmain.h"
 #include "formsetalarmtime.h"
 #include "formsettings.h"
+#include "formwifi.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -34,4 +35,6 @@ private:
     FormMain * formMain_;
     FormSetAlarmTime * formSetAlarmTime_;
     FormSettings * formSettings_;
+    WifiManager *wifiManager_;
+    FormWifi *formWifi_;
 };

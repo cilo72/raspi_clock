@@ -17,6 +17,7 @@ public:
     void init(int volume, QString station);
 
 signals:
+    void onWifiRequest();
     void onSettingsExit();
     void onSettingsDone(int volume, QString station);
     void onPlayStart(QString url);
