@@ -33,7 +33,7 @@ signals:
     void onSettingsRequest();
 private:
     Ui::FormMain *ui;
-    QLabel *wifiStatus_;
+//    QLabel *wifiStatus_;
     QTimer * timer_;
     QTimer * timerPlayer_;
     QMediaPlayer * player_;
