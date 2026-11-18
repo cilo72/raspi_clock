@@ -10,9 +10,7 @@
 #define UI_FORMSETTINGS_H
 
 #include <QtCore/QVariant>
-#include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
@@ -28,11 +26,9 @@ class Ui_FormSettings
 public:
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout;
-    QGridLayout *gridLayout;
-    QToolButton *pushButtonSf3;
-    QToolButton *pushButtonRpMainMix;
-    QToolButton *pushButtonRpMellowMix;
-    QToolButton *pushButtonFlux80;
+    QVBoxLayout *musicLayout;
+    QToolButton *pushButtonTest;
+    QLabel *labelMusicStatus;
     QVBoxLayout *verticalLayout_2;
     QPushButton *pushButtonVolumeDecrement;
     QLabel *labelVolume;
@@ -76,77 +72,34 @@ public:
         horizontalLayout = new QHBoxLayout();
         horizontalLayout->setObjectName(QString::fromUtf8("horizontalLayout"));
         horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        gridLayout = new QGridLayout();
-        gridLayout->setSpacing(6);
-        gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-        gridLayout->setContentsMargins(0, 0, 0, 0);
-        pushButtonSf3 = new QToolButton(FormSettings);
-        pushButtonSf3->setObjectName(QString::fromUtf8("pushButtonSf3"));
-        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        musicLayout = new QVBoxLayout();
+        musicLayout->setObjectName(QString::fromUtf8("musicLayout"));
+        pushButtonTest = new QToolButton(FormSettings);
+        pushButtonTest->setObjectName(QString::fromUtf8("pushButtonTest"));
+        QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(pushButtonSf3->sizePolicy().hasHeightForWidth());
-        pushButtonSf3->setSizePolicy(sizePolicy);
+        sizePolicy.setHeightForWidth(pushButtonTest->sizePolicy().hasHeightForWidth());
+        pushButtonTest->setSizePolicy(sizePolicy);
+        pushButtonTest->setMinimumSize(QSize(0, 100));
         QFont font;
         font.setPointSize(20);
         font.setBold(true);
-        pushButtonSf3->setFont(font);
-        QIcon icon;
-        icon.addFile(QString::fromUtf8(":/icons/icons/sf3.svg"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButtonSf3->setIcon(icon);
-        pushButtonSf3->setIconSize(QSize(64, 64));
-        pushButtonSf3->setCheckable(true);
-        pushButtonSf3->setAutoExclusive(true);
-        pushButtonSf3->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+        pushButtonTest->setFont(font);
+        pushButtonTest->setCheckable(true);
+        pushButtonTest->setToolButtonStyle(Qt::ToolButtonTextOnly);
 
-        gridLayout->addWidget(pushButtonSf3, 1, 0, 1, 1);
+        musicLayout->addWidget(pushButtonTest);
 
-        pushButtonRpMainMix = new QToolButton(FormSettings);
-        pushButtonRpMainMix->setObjectName(QString::fromUtf8("pushButtonRpMainMix"));
-        sizePolicy.setHeightForWidth(pushButtonRpMainMix->sizePolicy().hasHeightForWidth());
-        pushButtonRpMainMix->setSizePolicy(sizePolicy);
-        pushButtonRpMainMix->setFont(font);
-        pushButtonRpMainMix->setStyleSheet(QString::fromUtf8(""));
-        QIcon icon1;
-        icon1.addFile(QString::fromUtf8(":/icons/icons/radioparadise.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButtonRpMainMix->setIcon(icon1);
-        pushButtonRpMainMix->setIconSize(QSize(64, 64));
-        pushButtonRpMainMix->setCheckable(true);
-        pushButtonRpMainMix->setAutoExclusive(true);
-        pushButtonRpMainMix->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+        labelMusicStatus = new QLabel(FormSettings);
+        labelMusicStatus->setObjectName(QString::fromUtf8("labelMusicStatus"));
+        labelMusicStatus->setAlignment(Qt::AlignCenter);
+        labelMusicStatus->setWordWrap(true);
 
-        gridLayout->addWidget(pushButtonRpMainMix, 0, 0, 1, 1);
-
-        pushButtonRpMellowMix = new QToolButton(FormSettings);
-        pushButtonRpMellowMix->setObjectName(QString::fromUtf8("pushButtonRpMellowMix"));
-        sizePolicy.setHeightForWidth(pushButtonRpMellowMix->sizePolicy().hasHeightForWidth());
-        pushButtonRpMellowMix->setSizePolicy(sizePolicy);
-        pushButtonRpMellowMix->setFont(font);
-        pushButtonRpMellowMix->setIcon(icon1);
-        pushButtonRpMellowMix->setIconSize(QSize(64, 64));
-        pushButtonRpMellowMix->setCheckable(true);
-        pushButtonRpMellowMix->setAutoExclusive(true);
-        pushButtonRpMellowMix->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-
-        gridLayout->addWidget(pushButtonRpMellowMix, 0, 1, 1, 1);
-
-        pushButtonFlux80 = new QToolButton(FormSettings);
-        pushButtonFlux80->setObjectName(QString::fromUtf8("pushButtonFlux80"));
-        sizePolicy.setHeightForWidth(pushButtonFlux80->sizePolicy().hasHeightForWidth());
-        pushButtonFlux80->setSizePolicy(sizePolicy);
-        pushButtonFlux80->setFont(font);
-        QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/icons/icons/flux80.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButtonFlux80->setIcon(icon2);
-        pushButtonFlux80->setIconSize(QSize(64, 64));
-        pushButtonFlux80->setCheckable(true);
-        pushButtonFlux80->setAutoExclusive(true);
-        pushButtonFlux80->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
-
-        gridLayout->addWidget(pushButtonFlux80, 1, 1, 1, 1);
+        musicLayout->addWidget(labelMusicStatus);
 
 
-        horizontalLayout->addLayout(gridLayout);
+        horizontalLayout->addLayout(musicLayout);
 
         verticalLayout_2 = new QVBoxLayout();
         verticalLayout_2->setObjectName(QString::fromUtf8("verticalLayout_2"));
@@ -325,10 +278,8 @@ public:
     void retranslateUi(QWidget *FormSettings)
     {
         FormSettings->setWindowTitle(QCoreApplication::translate("FormSettings", "Form", nullptr));
-        pushButtonSf3->setText(QCoreApplication::translate("FormSettings", "SF3", nullptr));
-        pushButtonRpMainMix->setText(QCoreApplication::translate("FormSettings", "MainMix", nullptr));
-        pushButtonRpMellowMix->setText(QCoreApplication::translate("FormSettings", "MellowMix", nullptr));
-        pushButtonFlux80->setText(QCoreApplication::translate("FormSettings", "Flux 80s", nullptr));
+        pushButtonTest->setText(QCoreApplication::translate("FormSettings", "Musik testen", nullptr));
+        labelMusicStatus->setText(QCoreApplication::translate("FormSettings", "MP3-Dateien aus ~/Music", nullptr));
         pushButtonVolumeDecrement->setText(QString());
         labelVolume->setText(QString());
         pushButtonVolumeIncrement->setText(QString());

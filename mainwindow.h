@@ -28,7 +28,7 @@ private slots:
 
     void onSettingsRequest();
     void onSettingsExit();
-    void onSettingsDone(int volume, QString station);
+    void onSettingsDone(int volume);
 
 private:
     Ui::MainWindow *ui;

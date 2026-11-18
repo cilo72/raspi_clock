@@ -3,6 +3,10 @@
 #include "clock.h"
 #include <QPainter>
 #include <QPixmap>
+#include <QDebug>
+#include <QDir>
+#include <QDirIterator>
+#include <QFileInfo>
 
 static const char * styleSheetPushButtonSetAlarmOn = R"V0G0N(
 QPushButton {
@@ -61,24 +65,22 @@ QPushButton:pressed {
 
 static const char * KEY_ALARM_TIME = "main/alarm_time";
 static const char * KEY_VOLUME     = "main/volume";
-static const char * KEY_STATION    = "main/station";
 
 FormMain::FormMain(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::FormMain)
     , timer_(new QTimer)
     , timerPlayer_(new QTimer)
-    , player_(new QMediaPlayer)
+    , player_(new QMediaPlayer(this))
+    , alarmPlaylist_(new QMediaPlaylist(this))
     , alarmArmed_(false)
     , alarmActive_(false)
     , alarmTime_(QTime(6, 2))
     , volume_(80)
     , alarmStrong_(false)
-    , station_(Clock::stationRpMainMix())
 {
     alarmTime_ = Clock::readSetting(KEY_ALARM_TIME, alarmTime_).toTime();
     volume_    = Clock::readSetting(KEY_VOLUME, volume_).toInt();
-    station_   = Clock::readSetting(KEY_STATION, station_).toString();
     ui->setupUi(this);
     //wifiStatus_ = new QLabel(this);
     //wifiStatus_->setFixedSize(88, 60);
@@ -89,6 +91,7 @@ FormMain::FormMain(QWidget *parent)
 
     connect(timerPlayer_, &QTimer::timeout, this, &FormMain::onPlayStop);
     timerPlayer_->setSingleShot(true);
+    alarmPlaylist_->setPlaybackMode(QMediaPlaylist::Loop);
 
     updatePushButtonSetAlarm(alarmArmed_);
     updateAlarmTime(alarmTime_);
@@ -113,7 +116,7 @@ void FormMain::timeout()
         {
             timerPlayer_->start(60*10*1000);
             alarmActive_ = true;
-            play();
+            play(volume_);
         }
     }
 
@@ -130,6 +133,7 @@ void FormMain::on_pushButtonSetAlarm_clicked()
     {
         alarmArmed_ = false;
         alarmActive_ = false;
+        timerPlayer_->stop();
         player_->stop();
         ui->labelAlarmTime->setText(" ");
     }
@@ -164,10 +168,40 @@ void FormMain::updateAlarmTime(QTime time)
     ui->labelAlarmTime->setText(time2Text(time));
 }
 
-void FormMain::play()
+void FormMain::play(int volume)
 {
-    onVolumeChanged(volume_);
-    onPlayStart(station_);
+    player_->stop();
+    player_->setPlaylist(nullptr);
+    alarmPlaylist_->clear();
+
+    // Read the directory for each alarm so newly added music is included.
+    const QString musicDirectory = QDir::home().filePath("Music");
+    QDirIterator files(musicDirectory, QDir::Files | QDir::Readable,
+                       QDirIterator::Subdirectories);
+    QStringList tracks;
+    while (files.hasNext())
+    {
+        files.next();
+        if (files.fileInfo().suffix().compare("mp3", Qt::CaseInsensitive) == 0)
+            tracks.append(files.filePath());
+    }
+    tracks.sort();
+    for (const QString &track : tracks)
+        alarmPlaylist_->addMedia(QUrl::fromLocalFile(track));
+
+    if (alarmPlaylist_->isEmpty())
+    {
+        qWarning() << "Keine lesbaren MP3-Dateien in" << musicDirectory;
+        if (alarmActive_)
+            ui->labelAlarmTime->setText(tr("Keine MP3 in ~/Music"));
+        emit playbackError(tr("Keine lesbaren MP3-Dateien in ~/Music"));
+        return;
+    }
+
+    onVolumeChanged(volume);
+    player_->setPlaylist(alarmPlaylist_);
+    alarmPlaylist_->setCurrentIndex(0);
+    player_->play();
 }
 
 void FormMain::on_pushButtonSettings_clicked()
@@ -175,10 +209,9 @@ void FormMain::on_pushButtonSettings_clicked()
     emit onSettingsRequest();
 }
 
-void FormMain::onPlayStart(QString url)
+void FormMain::onPlayStart(int volume)
 {
-    player_->setMedia(QUrl(url));
-    player_->play();
+    play(volume);
 }
 
 void FormMain::onPlayStop()
@@ -191,13 +224,11 @@ void FormMain::onVolumeChanged(int volume)
     player_->setVolume(volume);
 }
 
-void FormMain::onSettingsDone(int volume, QString station)
+void FormMain::onSettingsDone(int volume)
 {
     volume_ = volume;
-    station_ = station;
 
     Clock::writeSetting(KEY_VOLUME, volume_);
-    Clock::writeSetting(KEY_STATION, station_);
 }
 void FormMain::setWifiStatus(int strength, const QString &status)
 {

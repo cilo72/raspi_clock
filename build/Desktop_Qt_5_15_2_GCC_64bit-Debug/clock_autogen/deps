@@ -121,11 +121,14 @@ clock_autogen/timestamp: \
 	/home/dani/Qt/5.15.2/gcc_64/include/QtGui/qtransform.h \
 	/home/dani/Qt/5.15.2/gcc_64/include/QtGui/qwindowdefs.h \
 	/home/dani/Qt/5.15.2/gcc_64/include/QtMultimedia/QMediaPlayer \
+	/home/dani/Qt/5.15.2/gcc_64/include/QtMultimedia/QMediaPlaylist \
 	/home/dani/Qt/5.15.2/gcc_64/include/QtMultimedia/qaudio.h \
+	/home/dani/Qt/5.15.2/gcc_64/include/QtMultimedia/qmediabindableinterface.h \
 	/home/dani/Qt/5.15.2/gcc_64/include/QtMultimedia/qmediacontent.h \
 	/home/dani/Qt/5.15.2/gcc_64/include/QtMultimedia/qmediaenumdebug.h \
 	/home/dani/Qt/5.15.2/gcc_64/include/QtMultimedia/qmediaobject.h \
 	/home/dani/Qt/5.15.2/gcc_64/include/QtMultimedia/qmediaplayer.h \
+	/home/dani/Qt/5.15.2/gcc_64/include/QtMultimedia/qmediaplaylist.h \
 	/home/dani/Qt/5.15.2/gcc_64/include/QtMultimedia/qmediaresource.h \
 	/home/dani/Qt/5.15.2/gcc_64/include/QtMultimedia/qmultimedia.h \
 	/home/dani/Qt/5.15.2/gcc_64/include/QtMultimedia/qtmultimedia-config.h \

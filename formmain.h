@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QTime>
 #include <QtMultimedia/QMediaPlayer>
+#include <QtMultimedia/QMediaPlaylist>
 
 namespace Ui {
 class FormMain;
@@ -21,14 +22,14 @@ public:
     void setWifiStatus(int strength, const QString &status);
     const QTime & alarmTime() const { return alarmTime_; }
     int volume() const { return volume_; }
-    const QString & station() const { return station_; }
 public slots:
     void onSetAlarmTimeDone(QTime newTime);
-    void onPlayStart(QString url);
+    void onPlayStart(int volume);
     void onPlayStop();
     void onVolumeChanged(int volume);
-    void onSettingsDone(int volume, QString station);
+    void onSettingsDone(int volume);
 signals:
+    void playbackError(const QString &message);
     void onSetAlarmTimeRequest();
     void onSettingsRequest();
 private:
@@ -37,16 +38,16 @@ private:
     QTimer * timer_;
     QTimer * timerPlayer_;
     QMediaPlayer * player_;
+    QMediaPlaylist * alarmPlaylist_;
     bool alarmArmed_;
     bool alarmActive_;
     QTime alarmTime_;
     int volume_;
     bool alarmStrong_;
-    QString station_;
     void updatePushButtonSetAlarm(bool alarmArmed);
     void updateAlarmTime(QTime time);
     QString time2Text(QTime newTime);
-    void play();
+    void play(int volume);
 private slots:
     void timeout();
     void on_pushButtonSetAlarm_clicked();

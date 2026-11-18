@@ -39,6 +39,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(formSettings_, &FormSettings::onSettingsDone, this, &MainWindow::onSettingsDone);
     connect(formSettings_, &FormSettings::onSettingsDone, formMain_, &FormMain::onSettingsDone);
 
+    connect(formMain_, &FormMain::playbackError, formSettings_, &FormSettings::onPlaybackError);
     connect(formSettings_, &FormSettings::onPlayStart, formMain_, &FormMain::onPlayStart);
     connect(formSettings_, &FormSettings::onPlayStop, formMain_, &FormMain::onPlayStop);
     connect(formSettings_, &FormSettings::onVolumeChanged, formMain_, &FormMain::onVolumeChanged);
@@ -71,7 +72,7 @@ void MainWindow::onSetAlarmTimeDone(QTime newTime)
 
 void MainWindow::onSettingsRequest()
 {
-    formSettings_->init(formMain_->volume(), formMain_->station());
+    formSettings_->init(formMain_->volume());
     ui->stackedWidget->setCurrentWidget(ui->pageSettings);
 }
 
@@ -80,9 +81,8 @@ void MainWindow::onSettingsExit()
     ui->stackedWidget->setCurrentWidget(ui->pageMain);
 }
 
-void MainWindow::onSettingsDone(int volume, QString station)
+void MainWindow::onSettingsDone(int volume)
 {
     Q_UNUSED(volume);
-    Q_UNUSED(station);
     ui->stackedWidget->setCurrentWidget(ui->pageMain);
 }

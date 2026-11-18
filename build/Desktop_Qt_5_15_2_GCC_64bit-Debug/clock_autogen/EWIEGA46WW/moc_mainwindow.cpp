@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[11];
-    char stringdata0[143];
+    QByteArrayData data[10];
+    char stringdata0[135];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -41,14 +41,13 @@ QT_MOC_LITERAL(5, 72, 7), // "newTime"
 QT_MOC_LITERAL(6, 80, 17), // "onSettingsRequest"
 QT_MOC_LITERAL(7, 98, 14), // "onSettingsExit"
 QT_MOC_LITERAL(8, 113, 14), // "onSettingsDone"
-QT_MOC_LITERAL(9, 128, 6), // "volume"
-QT_MOC_LITERAL(10, 135, 7) // "station"
+QT_MOC_LITERAL(9, 128, 6) // "volume"
 
     },
     "MainWindow\0onSetAlarmTimeRequest\0\0"
     "onSetAlarmTimeExit\0onSetAlarmTimeDone\0"
     "newTime\0onSettingsRequest\0onSettingsExit\0"
-    "onSettingsDone\0volume\0station"
+    "onSettingsDone\0volume"
 };
 #undef QT_MOC_LITERAL
 
@@ -71,7 +70,7 @@ static const uint qt_meta_data_MainWindow[] = {
        4,    1,   46,    2, 0x08 /* Private */,
        6,    0,   49,    2, 0x08 /* Private */,
        7,    0,   50,    2, 0x08 /* Private */,
-       8,    2,   51,    2, 0x08 /* Private */,
+       8,    1,   51,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -79,7 +78,7 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void, QMetaType::QTime,    5,
     QMetaType::Void,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::Int, QMetaType::QString,    9,   10,
+    QMetaType::Void, QMetaType::Int,    9,
 
        0        // eod
 };
@@ -95,7 +94,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 2: _t->onSetAlarmTimeDone((*reinterpret_cast< QTime(*)>(_a[1]))); break;
         case 3: _t->onSettingsRequest(); break;
         case 4: _t->onSettingsExit(); break;
-        case 5: _t->onSettingsDone((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< QString(*)>(_a[2]))); break;
+        case 5: _t->onSettingsDone((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
     }

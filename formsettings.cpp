@@ -1,6 +1,5 @@
 #include "formsettings.h"
 #include "ui_formsettings.h"
-#include "clock.h"
 #include <QPushButton>
 
 static const char * styleSheetVolume = R"V0G0N(
@@ -19,8 +18,6 @@ FormSettings::FormSettings(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::FormSettings)
     , volume_(80)
-    , isPlaying_(false)
-    , station_(Clock::stationRpMainMix())
 {
     ui->setupUi(this);
     incrementVolume();
@@ -32,25 +29,11 @@ FormSettings::~FormSettings()
     delete ui;
 }
 
-void FormSettings::init(int volume, QString station)
+void FormSettings::init(int volume)
 {
-    if(station == Clock::stationRpMainMix())
-    {
-        ui->pushButtonRpMainMix->setChecked(true);
-    }
-    else if(station == Clock::stationRpMellowMix())
-    {
-        ui->pushButtonRpMellowMix->setChecked(true);
-    }
-    else if(station == Clock::stationSf3())
-    {
-        ui->pushButtonSf3->setChecked(true);
-    }
-    else if(station == Clock::stationFlux80())
-    {
-        ui->pushButtonFlux80->setChecked(true);
-    }
-
+    ui->pushButtonTest->setChecked(false);
+    ui->pushButtonTest->setText(tr("Musik testen"));
+    ui->labelMusicStatus->setText(tr("MP3-Dateien aus ~/Music"));
     volume_ = volume;
     incrementVolume();
 }
@@ -108,53 +91,43 @@ void FormSettings::incrementVolume(int increment)
     if(increment != 0)
     {
         emit onVolumeChanged(volume_);
-        if(not isPlaying_)
-        {
-            isPlaying_ = true;
-
-            emit onPlayStart(station_);
-        }
     }
 }
 
 void FormSettings::on_pushButtonExit_clicked()
 {
+    ui->pushButtonTest->setChecked(false);
+    ui->pushButtonTest->setText(tr("Musik testen"));
     emit onPlayStop();
     emit onSettingsExit();
 }
 
 void FormSettings::on_pushButtonDone_clicked()
 {
+    ui->pushButtonTest->setChecked(false);
+    ui->pushButtonTest->setText(tr("Musik testen"));
     emit onPlayStop();
-    emit onSettingsDone(volume_, station_);
+    emit onSettingsDone(volume_);
 }
 
-void FormSettings::on_pushButtonFlux80_clicked()
+void FormSettings::on_pushButtonTest_clicked()
 {
-    station_ = Clock::stationFlux80();
-    emit onPlayStart(station_);
+    if (ui->pushButtonTest->isChecked())
+    {
+        ui->pushButtonTest->setText(tr("Test stoppen"));
+        ui->labelMusicStatus->setText(tr("MP3-Dateien aus ~/Music"));
+        emit onPlayStart(volume_);
+    }
+    else
+    {
+        ui->pushButtonTest->setText(tr("Musik testen"));
+        emit onPlayStop();
+    }
 }
 
-void FormSettings::on_pushButtonSf3_clicked()
+void FormSettings::onPlaybackError(const QString &message)
 {
-    station_ = Clock::stationSf3();
-    emit onPlayStart(station_);
+    ui->pushButtonTest->setChecked(false);
+    ui->pushButtonTest->setText(tr("Musik testen"));
+    ui->labelMusicStatus->setText(message);
 }
-
-void FormSettings::on_pushButtonRpMainMix_clicked()
-{
-    station_ = Clock::stationRpMainMix();
-    emit onPlayStart(station_);
-}
-
-void FormSettings::on_pushButtonQuit_clicked()
-{
-    QApplication::exit();
-}
-
-void FormSettings::on_pushButtonRpMellowMix_clicked()
-{
-    station_ = Clock::stationRpMellowMix();
-    emit onPlayStart(station_);
-}
-
