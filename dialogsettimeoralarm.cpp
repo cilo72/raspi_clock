@@ -18,7 +18,6 @@ DialogSetTimeOrAlarm::DialogSetTimeOrAlarm(const QTime & time, QWidget *parent)
         auto *digit = qobject_cast<QWidget *>(it.key());
         digit->setAttribute(Qt::WA_AcceptTouchEvents);
         digit->setCursor(Qt::SizeVerCursor);
-        digit->setToolTip(tr("Nach oben/unten wischen zum Verstellen"));
         digit->installEventFilter(this);
     }
     updateTime(time);
@@ -125,46 +124,6 @@ void DialogSetTimeOrAlarm::updateTime(const QTime &time)
 
     ui->label_hh_Mm->setText(QString("%1").arg(time.minute() / 10));
     ui->label_hh_mM->setText(QString("%1").arg(time.minute() % 10));
-}
-
-void DialogSetTimeOrAlarm::on_pushButton_Hh_mm_plus_clicked()
-{
-    updateTime(time_.addSecs(10 * 3600));
-}
-
-void DialogSetTimeOrAlarm::on_pushButton_Hh_mm_minus_clicked()
-{
-    updateTime(time_.addSecs(-10 * 3600));
-}
-
-void DialogSetTimeOrAlarm::on_pushButton_hH_mm_plus_clicked()
-{
-    updateTime(time_.addSecs(1 * 3600));
-}
-
-void DialogSetTimeOrAlarm::on_pushButton_hH_mm_minus_clicked()
-{
-    updateTime(time_.addSecs(-1 * 3600));
-}
-
-void DialogSetTimeOrAlarm::on_pushButton_hh_Mm_plus_clicked()
-{
-    updateTime(time_.addSecs(600));
-}
-
-void DialogSetTimeOrAlarm::on_pushButton_hh_Mm_minus_clicked()
-{
-    updateTime(time_.addSecs(-600));
-}
-
-void DialogSetTimeOrAlarm::on_pushButton_hh_mM_plus_clicked()
-{
-    updateTime(time_.addSecs(60));
-}
-
-void DialogSetTimeOrAlarm::on_pushButton_hh_mM_minus_clicked()
-{
-    updateTime(time_.addSecs(-60));
 }
 
 void DialogSetTimeOrAlarm::on_pushButtonExit_clicked()
