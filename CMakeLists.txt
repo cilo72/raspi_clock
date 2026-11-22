@@ -22,6 +22,7 @@ set(PROJECT_SOURCES
         formsettings.h formsettings.cpp formsettings.ui
         formsetalarmtime.h formsetalarmtime.cpp formsetalarmtime.ui
         clock.h clock.cpp
+        musicdirectory.h musicdirectory.cpp
         formwifi.h formwifi.cpp formwifi.ui
         wifimanager.h wifimanager.cpp
 )

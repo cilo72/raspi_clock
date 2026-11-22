@@ -1,5 +1,6 @@
 #include "formsettings.h"
 #include "ui_formsettings.h"
+#include "musicdirectory.h"
 #include <QPushButton>
 
 static const char * styleSheetVolume = R"V0G0N(
@@ -14,12 +15,15 @@ image: url(:/icons/icons/volume-%1.svg);
 }
 )V0G0N";
 
-FormSettings::FormSettings(QWidget *parent)
+FormSettings::FormSettings(QWidget *parent, std::function<QString()> directoryProvider)
     : QWidget(parent)
     , ui(new Ui::FormSettings)
+    , directoryProvider_(directoryProvider)
     , volume_(80)
 {
     ui->setupUi(this);
+    ui->labelMusicStatus->setText(directoryProvider_());
+    ui->labelMusicStatus->setTextFormat(Qt::PlainText);
     incrementVolume();
     connect(ui->pushButtonWlan, &QPushButton::clicked, this, &FormSettings::onWifiRequest);
 }
@@ -33,7 +37,7 @@ void FormSettings::init(int volume)
 {
     ui->pushButtonTest->setChecked(false);
     ui->pushButtonTest->setText(tr("Musik testen"));
-    ui->labelMusicStatus->setText(tr("MP3-Dateien aus ~/Music"));
+    ui->labelMusicStatus->setText(directoryProvider_());
     volume_ = volume;
     incrementVolume();
 }
@@ -115,7 +119,7 @@ void FormSettings::on_pushButtonTest_clicked()
     if (ui->pushButtonTest->isChecked())
     {
         ui->pushButtonTest->setText(tr("Test stoppen"));
-        ui->labelMusicStatus->setText(tr("MP3-Dateien aus ~/Music"));
+        ui->labelMusicStatus->setText(directoryProvider_());
         emit onPlayStart(volume_);
     }
     else

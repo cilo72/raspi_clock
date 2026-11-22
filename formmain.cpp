@@ -1,6 +1,7 @@
 #include "formmain.h"
 #include "ui_formmain.h"
 #include "clock.h"
+#include "musicdirectory.h"
 #include <QPainter>
 #include <QPixmap>
 #include <QDebug>
@@ -66,9 +67,10 @@ QPushButton:pressed {
 static const char * KEY_ALARM_TIME = "main/alarm_time";
 static const char * KEY_VOLUME     = "main/volume";
 
-FormMain::FormMain(QWidget *parent)
+FormMain::FormMain(QWidget *parent, std::function<QString()> directoryProvider)
     : QWidget(parent)
     , ui(new Ui::FormMain)
+    , directoryProvider_(directoryProvider)
     , timer_(new QTimer)
     , timerPlayer_(new QTimer)
     , player_(new QMediaPlayer(this))
@@ -175,8 +177,8 @@ void FormMain::play(int volume)
     alarmPlaylist_->clear();
 
     // Read the directory for each alarm so newly added music is included.
-    const QString musicDirectory = QDir::home().filePath("Music");
-    QDirIterator files(musicDirectory, QDir::Files | QDir::Readable,
+    const QString directory = directoryProvider_();
+    QDirIterator files(directory, QDir::Files | QDir::Readable,
                        QDirIterator::Subdirectories);
     QStringList tracks;
     while (files.hasNext())
@@ -185,19 +187,20 @@ void FormMain::play(int volume)
         if (files.fileInfo().suffix().compare("mp3", Qt::CaseInsensitive) == 0)
             tracks.append(files.filePath());
     }
-    tracks.sort();
     for (const QString &track : tracks)
         alarmPlaylist_->addMedia(QUrl::fromLocalFile(track));
 
     if (alarmPlaylist_->isEmpty())
     {
-        qWarning() << "Keine lesbaren MP3-Dateien in" << musicDirectory;
+        qWarning() << "Keine lesbaren MP3-Dateien in" << directory;
         if (alarmActive_)
-            ui->labelAlarmTime->setText(tr("Keine MP3 in ~/Music"));
-        emit playbackError(tr("Keine lesbaren MP3-Dateien in ~/Music"));
+            ui->labelAlarmTime->setText(tr("Keine MP3 in %1").arg(directory));
+        emit playbackError(tr("Keine lesbaren MP3-Dateien in %1").arg(directory));
         return;
     }
 
+    // Start each alarm or preview with a newly shuffled order.
+    alarmPlaylist_->shuffle();
     onVolumeChanged(volume);
     player_->setPlaylist(alarmPlaylist_);
     alarmPlaylist_->setCurrentIndex(0);

@@ -11,7 +11,7 @@ target_link_libraries(wifi_tests PRIVATE Qt5::Widgets Qt5::DBus Qt5::Test)
 add_test(NAME wifi COMMAND dbus-run-session -- sh -c "export DBUS_SYSTEM_BUS_ADDRESS=\"\$DBUS_SESSION_BUS_ADDRESS\"; export QT_QPA_PLATFORM=offscreen; exec \"$<TARGET_FILE:wifi_tests>\"")
 
 set(CMAKE_AUTORCC ON)
-add_executable(alarm_tests alarm_test.cpp ../formmain.cpp ../formsettings.cpp ../clock.cpp ../resource.qrc)
+add_executable(alarm_tests alarm_test.cpp ../formmain.cpp ../formsettings.cpp ../clock.cpp ../musicdirectory.cpp ../resource.qrc)
 target_include_directories(alarm_tests PRIVATE ..)
 target_link_libraries(alarm_tests PRIVATE Qt5::Widgets Qt5::Multimedia Qt5::Test)
 add_test(NAME alarm COMMAND alarm_tests)

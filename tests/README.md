@@ -13,13 +13,27 @@ Die Tests prüfen Adaptererkennung, SSIDs mit Sonderzeichen, Signalstärke,
 Scannen, neue und gespeicherte Verbindungen, Trennen sowie Touch-Eingabe,
 Passwortmaskierung und die Mindestgröße der Oberfläche.
 
-Die Alarmtests verwenden ein temporäres Home-Verzeichnis. Sie prüfen, dass der
-Alarm ausschließlich lokale MP3-Dateien aus `~/Music` einschließlich Unterordnern
+Die Alarmtests verwenden ein temporäres Home-Verzeichnis und eine isolierte
+Musikordnerauswahl, damit echte USB-Sticks die Tests nicht beeinflussen.
+Ein simulierter USB-Einhängepfad prüft USB-Vorrang, einen leeren Stick und den
+Rückfall auf `~/Music` nach dem Entfernen des Sticks. Sie prüfen, dass der
+Alarm ohne eingehängten USB-Stick lokale MP3-Dateien aus `~/Music` einschließlich Unterordnern
 lädt, Dateinamen mit Sonderzeichen und `.MP3` erkennt, die Wiedergabeliste
-wiederholt und beim nächsten Alarm neu einliest. Außerdem prüfen sie das Stoppen,
+wiederholt und beim nächsten Alarm neu einliest. Bei jedem Alarm und Teststart
+wird die Reihenfolge neu gemischt; innerhalb eines Durchlaufs kommt jedes Lied
+einmal vor. Die Tests prüfen die enthaltenen Dateien unabhängig von ihrer
+zufälligen Reihenfolge. Außerdem prüfen sie das Stoppen,
 die MP3-Testwiedergabe in den Einstellungen und leere bzw. fehlende Musikordner.
 Der Testknopf startet und stoppt die Musik mit der aktuell eingestellten
 Lautstärke; OK und Abbrechen stoppen die Wiedergabe ebenfalls.
+Das Label `labelMusicStatus` zeigt den gewählten Ordner als vollständigen Pfad;
+auch Fehlermeldungen nennen diesen Pfad.
+Auf dem Raspberry Pi zusätzlich mit einem eingehängten USB-Stick prüfen:
+Dessen Wurzelverzeichnis hat Vorrang vor `~/Music`, einschließlich Unterordnern.
+Bei mehreren USB-Laufwerken wird der alphabetisch erste Einhängepfad gewählt.
+Ein leerer Stick zeigt eine Fehlermeldung; nur ohne Stick wird `~/Music` genutzt.
+Nach dem Entfernen des Sticks müssen das erneute Öffnen der Einstellungen und
+der nächste Test- bzw. Alarmstart wieder `~/Music` verwenden.
 Die Testdateien enthalten kein Audio; die tatsächliche MP3-Wiedergabe muss auf
 dem Raspberry Pi mit dessen Audioausgabe geprüft werden.
 

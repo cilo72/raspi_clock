@@ -1,6 +1,8 @@
 #pragma once
 
 #include <QWidget>
+#include "musicdirectory.h"
+#include <functional>
 
 namespace Ui
 {
@@ -12,7 +14,8 @@ class FormSettings : public QWidget
     Q_OBJECT
 
 public:
-    explicit FormSettings(QWidget *parent = nullptr);
+    explicit FormSettings(QWidget *parent = nullptr,
+                          std::function<QString()> directoryProvider = musicDirectory);
     ~FormSettings();
     void init(int volume);
 
@@ -40,6 +43,7 @@ private slots:
 
 private:
     Ui::FormSettings *ui;
+    std::function<QString()> directoryProvider_;
     int volume_;
     void incrementVolume(int increment = 0);
 };

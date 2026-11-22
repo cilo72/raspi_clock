@@ -7,6 +7,8 @@
 #include <QTime>
 #include <QtMultimedia/QMediaPlayer>
 #include <QtMultimedia/QMediaPlaylist>
+#include "musicdirectory.h"
+#include <functional>
 
 namespace Ui {
 class FormMain;
@@ -17,7 +19,8 @@ class FormMain : public QWidget
     Q_OBJECT
 
 public:
-    explicit FormMain(QWidget *parent = nullptr);
+    explicit FormMain(QWidget *parent = nullptr,
+                      std::function<QString()> directoryProvider = musicDirectory);
     ~FormMain();
     void setWifiStatus(int strength, const QString &status);
     const QTime & alarmTime() const { return alarmTime_; }
@@ -34,6 +37,7 @@ signals:
     void onSettingsRequest();
 private:
     Ui::FormMain *ui;
+    std::function<QString()> directoryProvider_;
 //    QLabel *wifiStatus_;
     QTimer * timer_;
     QTimer * timerPlayer_;

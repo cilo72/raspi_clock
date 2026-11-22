@@ -38,126 +38,35 @@ QToolButton:checked {
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,1">
+    <layout class="QGridLayout" name="gridLayout_3">
      <property name="leftMargin">
-      <number>0</number>
+      <number>7</number>
      </property>
      <property name="topMargin">
-      <number>0</number>
+      <number>7</number>
      </property>
      <property name="rightMargin">
-      <number>0</number>
+      <number>7</number>
      </property>
      <property name="bottomMargin">
-      <number>0</number>
+      <number>7</number>
      </property>
-     <item>
-      <layout class="QVBoxLayout" name="musicLayout">
-       <item>
-        <widget class="QToolButton" name="pushButtonTest">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size><width>0</width><height>100</height></size>
-         </property>
-         <property name="font">
-          <font><pointsize>20</pointsize><bold>true</bold></font>
-         </property>
-         <property name="text"><string>Musik testen</string></property>
-         <property name="checkable"><bool>true</bool></property>
-         <property name="toolButtonStyle"><enum>Qt::ToolButtonTextOnly</enum></property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="labelMusicStatus">
-         <property name="text"><string>MP3-Dateien aus ~/Music</string></property>
-         <property name="alignment"><set>Qt::AlignCenter</set></property>
-         <property name="wordWrap"><bool>true</bool></property>
-        </widget>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_2">
-       <property name="topMargin">
-        <number>3</number>
+     <item row="2" column="1">
+      <widget class="QPushButton" name="pushButtonVolumeIncrement">
+       <property name="minimumSize">
+        <size>
+         <width>200</width>
+         <height>75</height>
+        </size>
        </property>
-       <item>
-        <widget class="QPushButton" name="pushButtonVolumeDecrement">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>75</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton {
-    background-color: rgb(99, 69, 44);
-    border-style: outset;
-    border-width: 0px;
-    border-radius: 10px;
-    border-color: rgb(230, 225, 201);
-    padding: 6px;
-	image: url(:/icons/icons/minus-on.svg);
-}
-
-QPushButton:pressed {
-    border-style: inset;
-	border-color: rgb(172, 147,98);
-
-	image: url(:/icons/icons/minus-off.svg);
-}
-
-QPushButton:disabled {
-    border-style: inset;
-	border-color: rgb(0, 147,98);
-
-	image: url(:/icons/icons/minus-off.svg);
-}</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="labelVolume">
-         <property name="styleSheet">
-          <string notr="true">QLabel {
-	background-color: rgb(99, 69, 44);
-   border-style: outset;
-   border-width: 0px;
-   border-radius: 10px;
-   border-color: rgb(230, 225, 201);
-   padding: 6px;
-  image: url(:/icons/icons/volume-0.svg);
- }</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="scaledContents">
-          <bool>false</bool>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pushButtonVolumeIncrement">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>75</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton {
+       <property name="maximumSize">
+        <size>
+         <width>200</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
     background-color: rgb(99, 69, 44);
     border-style: outset;
     border-width: 0px;
@@ -180,13 +89,129 @@ QPushButton:disabled {
 
 	image: url(:/icons/icons/plus-off.svg);
 }</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
-      </layout>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="pushButtonVolumeDecrement">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>75</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: rgb(99, 69, 44);
+    border-style: outset;
+    border-width: 0px;
+    border-radius: 10px;
+    border-color: rgb(230, 225, 201);
+    padding: 6px;
+	image: url(:/icons/icons/minus-on.svg);
+}
+
+QPushButton:pressed {
+    border-style: inset;
+	border-color: rgb(172, 147,98);
+
+	image: url(:/icons/icons/minus-off.svg);
+}
+
+QPushButton:disabled {
+    border-style: inset;
+	border-color: rgb(0, 147,98);
+
+	image: url(:/icons/icons/minus-off.svg);
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QToolButton" name="pushButtonTest">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>75</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>16777215</width>
+         <height>75</height>
+        </size>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>20</pointsize>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Musik testen</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonTextOnly</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="labelVolume">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>75</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QLabel {
+	background-color: rgb(99, 69, 44);
+   border-style: outset;
+   border-width: 0px;
+   border-radius: 10px;
+   border-color: rgb(230, 225, 201);
+   padding: 6px;
+  image: url(:/icons/icons/volume-0.svg);
+ }</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="scaledContents">
+        <bool>false</bool>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="labelMusicStatus">
+       <property name="text">
+        <string/>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
@@ -328,8 +353,6 @@ QPushButton:pressed {
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="resource.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>
