@@ -8,7 +8,7 @@ void GuiHelper::showModal(QWidget * w)
     w->setAttribute(Qt::WA_DeleteOnClose);
     if(Globals::isFullScreen())
     {
-        w->setWindowFlags(Qt::FramelessWindowHint);
+    //    w->setWindowFlags(Qt::FramelessWindowHint);
         w->showFullScreen();
     }
     else
