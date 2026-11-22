@@ -39,7 +39,10 @@ QLabel {
     background-color: rgb(99, 69, 44);
 	color: rgb(230, 225, 201);
 }
-</string>
+
+QWidget {
+background-color: rgb(99, 69, 44);
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
