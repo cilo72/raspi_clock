@@ -14,6 +14,7 @@ static const char * KEY_ALARM_TIME_3 = "set_alarm_time/alarm_time3";
 FormSetAlarmTime::FormSetAlarmTime(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::FormSetAlarmTime)
+    , widgetSetTime_(new WidgetSetTime)
     , alarmTime1_(QTime(5, 50))
     , alarmTime2_(QTime(6, 10))
     , alarmTime3_(QTime(7, 01))
@@ -23,12 +24,17 @@ FormSetAlarmTime::FormSetAlarmTime(QWidget *parent)
     alarmTime3_ = Clock::readSetting(KEY_ALARM_TIME_3, alarmTime3_).toTime();
     ui->setupUi(this);
 
+    connect(widgetSetTime_, &WidgetSetTime::timeChanged, this, &FormSetAlarmTime::timeChanged);
+
     updateButtons();
     ui->stackedWidget->setCurrentWidget(ui->pageSetTimeButtons);
+
+    ui->verticalLayoutSetTime->addWidget(widgetSetTime_);
 }
 
 FormSetAlarmTime::~FormSetAlarmTime()
 {
+    delete widgetSetTime_;
     delete ui;
 }
 
@@ -126,52 +132,14 @@ void FormSetAlarmTime::on_pushButtonSetAlarmTime_clicked()
     ui->stackedWidget->setCurrentWidget(ui->pageSetTime);
 }
 
+
 void FormSetAlarmTime::updateTime(const QTime &time)
 {
     alarmTime_ = time;
-    ui->label_Hh_mm->setText(QString("%1").arg(time.hour() / 10));
-    ui->label_hH_mm->setText(QString("%1").arg(time.hour() % 10));
-
-    ui->label_hh_Mm->setText(QString("%1").arg(time.minute() / 10));
-    ui->label_hh_mM->setText(QString("%1").arg(time.minute() % 10));
+    widgetSetTime_->setTime(alarmTime_);
 }
 
-void FormSetAlarmTime::on_pushButton_Hh_mm_plus_clicked()
+void FormSetAlarmTime::timeChanged(QTime time)
 {
-    updateTime(alarmTime_.addSecs(10 * 3600));
-}
-
-void FormSetAlarmTime::on_pushButton_Hh_mm_minus_clicked()
-{
-    updateTime(alarmTime_.addSecs(-10 * 3600));
-}
-
-void FormSetAlarmTime::on_pushButton_hH_mm_plus_clicked()
-{
-    updateTime(alarmTime_.addSecs(1 * 3600));
-}
-
-void FormSetAlarmTime::on_pushButton_hH_mm_minus_clicked()
-{
-    updateTime(alarmTime_.addSecs(-1 * 3600));
-}
-
-void FormSetAlarmTime::on_pushButton_hh_Mm_plus_clicked()
-{
-    updateTime(alarmTime_.addSecs(600));
-}
-
-void FormSetAlarmTime::on_pushButton_hh_Mm_minus_clicked()
-{
-    updateTime(alarmTime_.addSecs(-600));
-}
-
-void FormSetAlarmTime::on_pushButton_hh_mM_plus_clicked()
-{
-    updateTime(alarmTime_.addSecs(60));
-}
-
-void FormSetAlarmTime::on_pushButton_hh_mM_minus_clicked()
-{
-    updateTime(alarmTime_.addSecs(-60));
+    alarmTime_ = time;
 }

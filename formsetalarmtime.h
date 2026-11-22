@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QTime>
 #include <QLabel>
+#include "widgetsettime.h"
 
 namespace Ui {
 class FormSetAlarmTime;
@@ -27,24 +28,11 @@ private slots:
 
     void on_pushButtonSetAlarmTime_clicked();
 
-    void on_pushButton_Hh_mm_plus_clicked();
-
-    void on_pushButton_Hh_mm_minus_clicked();
-
-    void on_pushButton_hH_mm_plus_clicked();
-
-    void on_pushButton_hH_mm_minus_clicked();
-
-    void on_pushButton_hh_Mm_plus_clicked();
-
-    void on_pushButton_hh_Mm_minus_clicked();
-
-    void on_pushButton_hh_mM_plus_clicked();
-
-    void on_pushButton_hh_mM_minus_clicked();
+    void timeChanged(QTime time);
 
 private:
     Ui::FormSetAlarmTime *ui;
+    WidgetSetTime * widgetSetTime_;
     QTime alarmTime1_;
     QTime alarmTime2_;
     QTime alarmTime3_;

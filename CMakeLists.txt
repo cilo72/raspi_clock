@@ -46,6 +46,8 @@ else()
     else()
         add_executable(clock
             ${PROJECT_SOURCES}
+            widgetsettime.h widgetsettime.cpp widgetsettime.ui
+            formsettime.h formsettime.cpp formsettime.ui
         )
     endif()
 endif()

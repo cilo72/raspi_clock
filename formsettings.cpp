@@ -2,6 +2,7 @@
 #include "ui_formsettings.h"
 #include "musicdirectory.h"
 #include <QPushButton>
+#include "formsettime.h"
 
 static const char * styleSheetVolume = R"V0G0N(
 QLabel {
@@ -26,6 +27,7 @@ FormSettings::FormSettings(QWidget *parent, std::function<QString()> directoryPr
     ui->labelMusicStatus->setTextFormat(Qt::PlainText);
     incrementVolume();
     connect(ui->pushButtonWlan, &QPushButton::clicked, this, &FormSettings::onWifiRequest);
+
 }
 
 FormSettings::~FormSettings()
@@ -135,3 +137,15 @@ void FormSettings::onPlaybackError(const QString &message)
     ui->pushButtonTest->setText(tr("Musik testen"));
     ui->labelMusicStatus->setText(message);
 }
+
+void FormSettings::on_pushButtonTime_clicked()
+{
+    FormSetTime *form = new FormSetTime(this);
+    form->setWindowFlags(Qt::FramelessWindowHint);
+    form->setWindowFlag(Qt::Window); // Wichtig, damit es ein eigenes Fenster wird und nicht im Hauptfenster klebt
+    form->setWindowModality(Qt::ApplicationModal); // Blockiert alle anderen Fenster der App
+    form->setAttribute(Qt::WA_DeleteOnClose);
+    form->showFullScreen();
+}
+
+

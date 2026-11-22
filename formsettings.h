@@ -41,6 +41,7 @@ private slots:
 
     void on_pushButtonTest_clicked();
 
+    void on_pushButtonTime_clicked();
 private:
     Ui::FormSettings *ui;
     std::function<QString()> directoryProvider_;
