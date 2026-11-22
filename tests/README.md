@@ -1,6 +1,21 @@
 Die WLAN-Tests verwenden einen eigenen D-Bus mit einem simulierten NetworkManager.
 Sie ändern keine WLAN-Verbindungen des Rechners.
 
+Die Wischbedienung in `DialogSetTimeOrAlarm` lässt sich unabhängig testen:
+
+```sh
+cmake -S tests/time_input -B /tmp/clock-time-tests
+cmake --build /tmp/clock-time-tests
+ctest --test-dir /tmp/clock-time-tests --output-on-failure
+```
+
+Diese Tests benötigen Qt 5 Widgets und Test. Sie prüfen Mausziehen auf allen
+vier Ziffern, Touch-Ereignisse, längeres Ziehen, kleine Bewegungen ohne Änderung,
+den Übergang über Mitternacht sowie Bestätigen und Abbrechen.
+Pro 32 Pixel vertikaler Bewegung wird ein Schritt ausgelöst: nach oben erhöht,
+nach unten verringert den Wert wie die jeweilige Plus-/Minus-Taste.
+Auf dem Raspberry Pi zusätzlich die Empfindlichkeit am echten Touchscreen prüfen.
+
 Voraussetzungen: Qt 5 Widgets, Multimedia, D-Bus und Test (Entwicklungspakete), CMake sowie dbus-run-session.
 
 ```sh
