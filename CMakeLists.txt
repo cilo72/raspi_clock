@@ -18,11 +18,11 @@ set(PROJECT_SOURCES
         mainwindow.h
         mainwindow.ui
         resource.qrc
-        formmain.h formmain.cpp formmain.ui
-        formsettings.h formsettings.cpp formsettings.ui
-        formsetalarmtime.h formsetalarmtime.cpp formsetalarmtime.ui
-        clock.h clock.cpp
-        musicdirectory.h musicdirectory.cpp
+#        formmain.h formmain.cpp formmain.ui
+dialogsettings.h dialogsettings.cpp dialogsettings.ui
+dialogsetalarm.h dialogsetalarm.cpp dialogsetalarm.ui
+
+        music.h music.cpp
         formwifi.h formwifi.cpp formwifi.ui
         wifimanager.h wifimanager.cpp
 )
@@ -46,8 +46,10 @@ else()
     else()
         add_executable(clock
             ${PROJECT_SOURCES}
-            widgetsettime.h widgetsettime.cpp widgetsettime.ui
-            formsettime.h formsettime.cpp formsettime.ui
+            dialogsettimeoralarm.h dialogsettimeoralarm.cpp dialogsettimeoralarm.ui
+
+            globals.h globals.cpp
+            guihelper.h guihelper.cpp
         )
     endif()
 endif()

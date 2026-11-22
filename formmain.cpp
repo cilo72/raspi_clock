@@ -1,7 +1,7 @@
 #include "formmain.h"
 #include "ui_formmain.h"
 #include "clock.h"
-#include "musicdirectory.h"
+#include "music.h"
 #include <QPainter>
 #include <QPixmap>
 #include <QDebug>

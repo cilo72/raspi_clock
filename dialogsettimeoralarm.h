@@ -5,24 +5,22 @@
 
 namespace Ui
 {
-class WidgetSetTime;
+class DialogSetTimeOrAlarm;
 }
 
-class WidgetSetTime : public QWidget
+class DialogSetTimeOrAlarm : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit WidgetSetTime(QWidget *parent = nullptr);
-    ~WidgetSetTime();
-
-    void setTime(const QTime & time);
+    explicit DialogSetTimeOrAlarm(const QTime &time, QWidget *parent = nullptr);
+    ~DialogSetTimeOrAlarm();
 
 signals:
     void timeChanged(QTime time);
 
 private:
-    Ui::WidgetSetTime *ui;
+    Ui::DialogSetTimeOrAlarm *ui;
 
     void updateTime(const QTime &time);
 
@@ -46,4 +44,6 @@ private slots:
     void on_pushButton_hh_mM_minus_clicked();
 
 
+    void on_pushButtonExit_clicked();
+    void on_pushButtonDone_clicked();
 };

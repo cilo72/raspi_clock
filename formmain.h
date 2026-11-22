@@ -7,7 +7,7 @@
 #include <QTime>
 #include <QtMultimedia/QMediaPlayer>
 #include <QtMultimedia/QMediaPlaylist>
-#include "musicdirectory.h"
+#include "music.h"
 #include <functional>
 
 namespace Ui {

@@ -1,5 +1,5 @@
 #include "mainwindow.h"
-
+#include "globals.h"
 #include <QApplication>
 #include <QCommandLineParser>
 
@@ -15,7 +15,9 @@ int main(int argc, char *argv[])
 
     MainWindow w;
 
-    if(parser.isSet(fullscreenOption))
+    Globals::setFullScreen(parser.isSet(fullscreenOption));
+
+    if(Globals::isFullScreen())
     {
         w.setWindowFlags(Qt::FramelessWindowHint);
         w.showFullScreen();

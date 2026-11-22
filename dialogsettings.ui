@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FormSettings</class>
- <widget class="QWidget" name="FormSettings">
+ <class>DialogSettings</class>
+ <widget class="QWidget" name="DialogSettings">
   <property name="geometry">
    <rect>
     <x>0</x>

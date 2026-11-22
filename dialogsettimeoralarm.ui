@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>WidgetSetTime</class>
- <widget class="QWidget" name="WidgetSetTime">
+ <class>DialogSetTimeOrAlarm</class>
+ <widget class="QWidget" name="DialogSetTimeOrAlarm">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -416,6 +416,85 @@ QPushButton:pressed {
 	border-color: rgb(172, 147,98);
 
 	image: url(:/icons/icons/plus-off.svg);
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <item>
+      <widget class="QPushButton" name="pushButtonExit">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: rgb(99, 69, 44);
+    border-style: outset;
+    border-width: 3px;
+    border-radius: 10px;
+    border-color: rgb(230, 225, 201);
+    padding: 6px;
+	image: url(:/icons/icons/x-icon-on.svg);
+}
+
+QPushButton:pressed {
+    border-style: inset;
+	border-color: rgb(172, 147,98);
+
+	image: url(:/icons/icons/x-icon-off.svg);
+}</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonDone">
+       <property name="minimumSize">
+        <size>
+         <width>100</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QPushButton {
+    background-color: rgb(99, 69, 44);
+    border-style: outset;
+    border-width: 3px;
+    border-radius: 10px;
+    border-color: rgb(230, 225, 201);
+    padding: 6px;
+	image: url(:/icons/icons/ok-on.svg);
+}
+
+QPushButton:pressed {
+    border-style: inset;
+	border-color: rgb(172, 147,98);
+
+	image: url(:/icons/icons/ok-off.svg);
 }</string>
        </property>
        <property name="text">

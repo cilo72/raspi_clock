@@ -1,88 +1,162 @@
 #include "mainwindow.h"
+#include "dialogsettings.h"
+#include "dialogsetalarm.h"
+#include "guihelper.h"
 #include "./ui_mainwindow.h"
+#include "globals.h"
+#include "music.h"
+
+
+static const char * styleSheetPushButtonSetAlarmOn = R"V0G0N(
+QPushButton {
+    background-color: rgb(99, 69, 44);
+    border-style: outset;
+    border-width: 3px;
+    border-radius: 10px;
+    border-color: rgb(230, 225, 201);
+    padding: 6px;
+    image: url(:/icons/icons/alarm-on-on.svg);
+}
+
+QPushButton:pressed {
+    border-style: inset;
+    border-color: rgb(172, 147,98);
+    image: url(:/icons/icons/alarm-on-off.svg);
+}
+)V0G0N";
+
+static const char * styleSheetPushButtonSetAlarmOnStrong = R"V0G0N(
+QPushButton {
+    background-color: rgb(99, 69, 44);
+    border-style: outset;
+    border-width: 6px;
+    border-radius: 10px;
+    border-color: rgb(230, 225, 201);
+    padding: 6px;
+    image: url(:/icons/icons/alarm-on-on.svg);
+}
+
+QPushButton:pressed {
+    border-style: inset;
+    border-color: rgb(172, 147,98);
+    image: url(:/icons/icons/alarm-on-off.svg);
+}
+)V0G0N";
+
+
+static const char * styleSheetPushButtonSetAlarmOff = R"V0G0N(
+QPushButton {
+    background-color: rgb(99, 69, 44);
+    border-style: outset;
+    border-width: 3px;
+    border-radius: 10px;
+    border-color: rgb(230, 225, 201);
+    padding: 6px;
+    image: url(:/icons/icons/alarm-off-on.svg);
+}
+
+QPushButton:pressed {
+    border-style: inset;
+    border-color: rgb(172, 147,98);
+    image: url(:/icons/icons/alarm-off-off.svg);
+}
+)V0G0N";
+
+//static const char * KEY_ALARM_TIME = "main/alarm_time";
+//static const char * KEY_VOLUME     = "main/volume";
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , formMain_(new FormMain)
-    , formSetAlarmTime_(new FormSetAlarmTime)
-    , formSettings_(new FormSettings)
-    , wifiManager_(new WifiManager(this))
-    , formWifi_(new FormWifi(wifiManager_))
+    , timer_(new QTimer)
+    , timerPlayer_(new QTimer)
+    , alarmArmed_(false)
+    , alarmActive_(false)
+    , alarm_(QTime(6, 2))
+    , alarmStrong_(false)
 {
     ui->setupUi(this);
-    ui->stackedWidget->addWidget(formWifi_);
-    connect(formSettings_, &FormSettings::onWifiRequest, this, [this] {
-        formWifi_->init();
-        ui->stackedWidget->setCurrentWidget(formWifi_);
-    });
-    connect(formWifi_, &FormWifi::onWifiExit, this, [this] {
-        ui->stackedWidget->setCurrentWidget(ui->pageSettings);
-    });
-    connect(wifiManager_, &WifiManager::changed, this, [this] {
-        formMain_->setWifiStatus(wifiManager_->strength(), wifiManager_->status());
-    });
-    ui->stackedWidget->setCurrentWidget(ui->pageMain);
+    alarm_ = Globals::alarm();
 
-    ui->pageMain->layout()->addWidget(formMain_);
-    ui->pageSetAlarmTime->layout()->addWidget(formSetAlarmTime_);
-    ui->pageSettings->layout()->addWidget(formSettings_);
-
-    connect(formMain_, &FormMain::onSetAlarmTimeRequest, this, &MainWindow::onSetAlarmTimeRequest);
-    connect(formMain_, &FormMain::onSettingsRequest, this, &MainWindow::onSettingsRequest);
-
-    connect(formSetAlarmTime_, &FormSetAlarmTime::onSetAlarmTimeExit, this, &MainWindow::onSetAlarmTimeExit);
-    connect(formSetAlarmTime_, &FormSetAlarmTime::onSetAlarmTimeDone, formMain_, &FormMain::onSetAlarmTimeDone);
-    connect(formSetAlarmTime_, &FormSetAlarmTime::onSetAlarmTimeDone, this, &MainWindow::onSetAlarmTimeDone);
-
-    connect(formSettings_, &FormSettings::onSettingsExit, this, &MainWindow::onSettingsExit);
-    connect(formSettings_, &FormSettings::onSettingsDone, this, &MainWindow::onSettingsDone);
-    connect(formSettings_, &FormSettings::onSettingsDone, formMain_, &FormMain::onSettingsDone);
-
-    connect(formMain_, &FormMain::playbackError, formSettings_, &FormSettings::onPlaybackError);
-    connect(formSettings_, &FormSettings::onPlayStart, formMain_, &FormMain::onPlayStart);
-    connect(formSettings_, &FormSettings::onPlayStop, formMain_, &FormMain::onPlayStop);
-    connect(formSettings_, &FormSettings::onVolumeChanged, formMain_, &FormMain::onVolumeChanged);
+    timeout();
+    connect(timer_, &QTimer::timeout, this, &MainWindow::timeout);
+    connect(timerPlayer_, &QTimer::timeout, this, &MainWindow::timeoutPlayer);
+    update();
+    timer_->start(1000);
 }
 
 MainWindow::~MainWindow()
 {
-    delete formSettings_;
-    delete formSetAlarmTime_;
-    delete formMain_;
+    delete timer_;
+    delete timerPlayer_;
     delete ui;
 }
 
-void MainWindow::onSetAlarmTimeRequest()
+void MainWindow::timeout()
 {
-    formSetAlarmTime_->init(formMain_->alarmTime());
-    ui->stackedWidget->setCurrentWidget(ui->pageSetAlarmTime);
+    QTime now = QTime::currentTime();
+    ui->labelTime->setText(time2Text(now));
+    if((alarmArmed_ == true) and (alarmActive_ == false))
+    {
+        if((now.hour() == alarm_.hour()) and (now.minute() == alarm_.minute()))
+        {
+            timerPlayer_->start(60*10*1000);
+            alarmActive_ = true;
+            Music::player()->start(Globals::volume());
+        }
+    }
+
+    if(alarmActive_)
+    {
+        alarmStrong_ = not alarmStrong_;
+        ui->pushButtonSetAlarm->setStyleSheet(alarmStrong_ ? styleSheetPushButtonSetAlarmOn : styleSheetPushButtonSetAlarmOnStrong);
+    }
 }
 
-void MainWindow::onSetAlarmTimeExit()
+QString MainWindow::time2Text(QTime newTime)
 {
-    ui->stackedWidget->setCurrentWidget(ui->pageMain);
+    return QString("%1:%2").arg(newTime.hour(), 2, 10, QChar('0')).arg(newTime.minute(), 2, 10, QChar('0'));
 }
 
-void MainWindow::onSetAlarmTimeDone(QTime newTime)
+void MainWindow::on_pushButtonSettings_clicked()
 {
-    Q_UNUSED(newTime);
-    ui->stackedWidget->setCurrentWidget(ui->pageMain);
+    GuiHelper::showModal(new DialogSettings(this));
 }
 
-void MainWindow::onSettingsRequest()
+void MainWindow::on_pushButtonSetAlarm_clicked()
 {
-    formSettings_->init(formMain_->volume());
-    ui->stackedWidget->setCurrentWidget(ui->pageSettings);
+    if(alarmArmed_ == true)
+    {
+        alarmArmed_ = false;
+        alarmActive_ = false;
+        timerPlayer_->stop();
+        Music::player()->stop();        
+    }
+    else
+    {
+        auto * dialog = new DialogSetAlarm();
+        connect(dialog, &DialogSetAlarm::signal_alarmChanged, this, &MainWindow::on_alarmChanged);
+        GuiHelper::showModal(dialog);
+    }
+    update();
 }
 
-void MainWindow::onSettingsExit()
+void MainWindow::timeoutPlayer()
 {
-    ui->stackedWidget->setCurrentWidget(ui->pageMain);
+    Music::player()->stop();
 }
 
-void MainWindow::onSettingsDone(int volume)
+void MainWindow::on_alarmChanged(QTime newTime)
 {
-    Q_UNUSED(volume);
-    ui->stackedWidget->setCurrentWidget(ui->pageMain);
+    alarm_ = newTime;
+    alarmArmed_ = true;
+    update();
+    Globals::setAlarm(alarm_);
+}
+
+void MainWindow::update()
+{
+    ui->pushButtonSetAlarm->setStyleSheet(alarmArmed_ ? styleSheetPushButtonSetAlarmOn : styleSheetPushButtonSetAlarmOff);
+    ui->labelAlarm->setText(alarmArmed_ ? time2Text(alarm_) : " ");
 }

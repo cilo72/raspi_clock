@@ -1,10 +1,12 @@
 #pragma once
 
 #include <QMainWindow>
-#include "formmain.h"
-#include "formsetalarmtime.h"
-#include "formsettings.h"
-#include "formwifi.h"
+#include <QTimer>
+#include <QTime>
+//#include "formmain.h"
+//#include "formsetalarmtime.h"
+//#include "formsettings.h"
+//#include "formwifi.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -22,19 +24,41 @@ public:
     ~MainWindow();
 
 private slots:
-    void onSetAlarmTimeRequest();
-    void onSetAlarmTimeExit();
-    void onSetAlarmTimeDone(QTime newTime);
+//    void onSetAlarmTimeRequest();
+//    void onSetAlarmTimeExit();
+//    void onSetAlarmTimeDone(QTime newTime);
+//
+//    void onSettingsRequest();
+//    void onSettingsExit();
+//    void onSettingsDone(int volume);
 
-    void onSettingsRequest();
-    void onSettingsExit();
-    void onSettingsDone(int volume);
+    void on_pushButtonSettings_clicked();
+
+    void on_pushButtonSetAlarm_clicked();
+
+    void on_alarmChanged(QTime newTime);
 
 private:
     Ui::MainWindow *ui;
-    FormMain * formMain_;
-    FormSetAlarmTime * formSetAlarmTime_;
-    FormSettings * formSettings_;
-    WifiManager *wifiManager_;
-    FormWifi *formWifi_;
+//    FormMain * formMain_;
+//    FormSetAlarmTime * formSetAlarmTime_;
+//    FormSettings * formSettings_;
+//    WifiManager *wifiManager_;
+//    FormWifi *formWifi_;
+    QTimer * timer_;
+    QTimer * timerPlayer_;
+    bool alarmArmed_;
+    bool alarmActive_;
+    QTime alarm_;
+    bool alarmStrong_;
+
+//    int volume_;
+//    void play(int volume);
+
+    void timeout();
+    void timeoutPlayer();
+    QString time2Text(QTime newTime);
+    //void updatePushButtonSetAlarm(bool alarmArmed);
+    void update();
+
 };
