@@ -1,0 +1,8 @@
+// Only members of the dedicated clock group may set the time or toggle NTP.
+polkit.addRule(function(action, subject) {
+    if (subject.isInGroup("raspi-clock") &&
+        (action.id === "org.freedesktop.timedate1.set-time" ||
+         action.id === "org.freedesktop.timedate1.set-ntp")) {
+        return polkit.Result.YES;
+    }
+});

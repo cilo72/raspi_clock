@@ -80,6 +80,7 @@ bool DialogSetTimeOrAlarm::eventFilter(QObject *watched, QEvent *event)
             swipeTarget_ = nullptr;
         break;
     case QEvent::MouseButtonPress:
+    case QEvent::MouseButtonDblClick:
     {
         auto *mouse = static_cast<QMouseEvent *>(event);
         if (mouse->button() == Qt::LeftButton && !swipeTarget_)

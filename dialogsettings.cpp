@@ -5,6 +5,9 @@
 #include "globals.h"
 #include "music.h"
 #include "dialogsettimeoralarm.h"
+#include "systemclock.h"
+#include <QApplication>
+#include <QMessageBox>
 #include <QPushButton>
 
 static const char * styleSheetVolume = R"V0G0N(
@@ -147,5 +150,17 @@ void DialogSettings::on_pushButtonTime_clicked()
 
 void DialogSettings::timeChanged(QTime time)
 {
-
+    ui->pushButtonTime->setEnabled(false);
+    // Finish the system operation even if the settings window is closed.
+    auto *clock = new SystemClock(qApp);
+    connect(clock, &SystemClock::finished, clock, &QObject::deleteLater);
+    connect(clock, &SystemClock::finished, this, [this](bool success, const QString &message) {
+        ui->pushButtonTime->setEnabled(true);
+        if (success)
+            QMessageBox::information(this, tr("Uhrzeit"), message);
+        else
+            QMessageBox::warning(this, tr("Uhrzeit"),
+                                 message + tr("\nBitte die Berechtigungen für den Zeitdienst prüfen."));
+    });
+    clock->setTime(time);
 }

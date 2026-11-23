@@ -1,6 +1,21 @@
 Die WLAN-Tests verwenden einen eigenen D-Bus mit einem simulierten NetworkManager.
 Sie ändern keine WLAN-Verbindungen des Rechners.
 
+Die Systemzeittests verwenden einen eigenen D-Bus mit einem simulierten
+systemd-timedated. Sie ändern weder Systemzeit noch echte NTP-Einstellungen:
+
+```sh
+cmake -S tests/system_clock -B /tmp/clock-system-time-tests
+cmake --build /tmp/clock-system-time-tests
+ctest --test-dir /tmp/clock-system-time-tests --output-on-failure
+```
+
+Benötigt werden Qt 5 Core, D-Bus und Test sowie `dbus-run-session`.
+Geprüft werden lokales Datum und Uhrzeit, die Sekunden- und UTC-Umrechnung,
+das vorherige Abschalten von NTP sowie Berechtigungsfehler und die
+Wiederherstellung einer zuvor aktiven Synchronisierung bei Fehlern.
+Die Berechtigungen auf dem Raspberry Pi sind in `deployment/README.md` erklärt.
+
 Die Wischbedienung in `DialogSetTimeOrAlarm` lässt sich unabhängig testen:
 
 ```sh

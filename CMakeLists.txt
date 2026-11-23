@@ -23,6 +23,7 @@ dialogsettings.h dialogsettings.cpp dialogsettings.ui
 dialogsetalarm.h dialogsetalarm.cpp dialogsetalarm.ui
 
         music.h music.cpp
+        systemclock.h systemclock.cpp
         formwifi.h formwifi.cpp formwifi.ui
         wifimanager.h wifimanager.cpp
 )
