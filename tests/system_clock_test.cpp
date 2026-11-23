@@ -82,7 +82,7 @@ private slots:
     {
         QFETCH(bool, ntp);
         mock_.ntp = ntp;
-        SystemClock clock(nullptr, QDBusConnection::sessionBus());
+        SystemClock clock(nullptr, QDBusConnection::sessionBus(), [] { return true; });
         QSignalSpy finished(&clock, &SystemClock::finished);
         const QDate before = QDate::currentDate();
         clock.setTime(QTime(9, 42, 59));
@@ -122,7 +122,7 @@ private slots:
         mock_.failDisable = stage == "disable";
         mock_.failSet = stage == "set" || stage == "restore" || stage == "manual";
         mock_.failRestore = stage == "restore";
-        SystemClock clock(nullptr, QDBusConnection::sessionBus());
+        SystemClock clock(nullptr, QDBusConnection::sessionBus(), [] { return true; });
         QSignalSpy finished(&clock, &SystemClock::finished);
         clock.setTime(QTime(8, 15));
         QTRY_COMPARE(finished.count(), 1);
@@ -142,6 +142,35 @@ private slots:
         clock.setTime(QTime());
         QCOMPARE(finished.count(), 1);
         QVERIFY(!finished.first().at(0).toBool());
+        QVERIFY(mock_.calls.isEmpty());
+    }
+
+    void pcOnlySimulates()
+    {
+        mock_.ntp = true;
+        SystemClock clock(nullptr, QDBusConnection::sessionBus(), [] { return false; });
+        QSignalSpy finished(&clock, &SystemClock::finished);
+        clock.setTime(QTime(9, 42, 59));
+        QCOMPARE(finished.count(), 0);
+        QTRY_COMPARE(finished.count(), 1);
+        QVERIFY(finished.first().at(0).toBool());
+        const QString message = finished.first().at(1).toString();
+        QVERIFY(message.contains("Simulation"));
+        QVERIFY(message.contains("09:42"));
+        QVERIFY(mock_.calls.isEmpty());
+        QVERIFY(mock_.ntp);
+    }
+
+    void detectedPcOnlySimulates()
+    {
+        if (SystemClock::isRaspberryPi())
+            QSKIP("Dieser Test prüft den Standardpfad auf einem PC.");
+        SystemClock clock(nullptr, QDBusConnection::sessionBus());
+        QSignalSpy finished(&clock, &SystemClock::finished);
+        clock.setTime(QTime(12, 34));
+        QTRY_COMPARE(finished.count(), 1);
+        QVERIFY(finished.first().at(0).toBool());
+        QVERIFY(finished.first().at(1).toString().contains("Simulation"));
         QVERIFY(mock_.calls.isEmpty());
     }
 };

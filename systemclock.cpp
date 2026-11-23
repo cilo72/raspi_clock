@@ -3,14 +3,36 @@
 #include <QDateTime>
 #include <QDBusPendingCallWatcher>
 #include <QDBusVariant>
+#include <QFile>
+#include <QTimer>
 
 namespace {
 const QString service = QStringLiteral("org.freedesktop.timedate1");
 const QString path = QStringLiteral("/org/freedesktop/timedate1");
 }
 
-SystemClock::SystemClock(QObject *parent, const QDBusConnection &bus)
-    : QObject(parent), bus_(bus)
+bool SystemClock::isRaspberryPi()
+{
+    for (const QString &root : {QStringLiteral("/proc/device-tree"),
+                                QStringLiteral("/sys/firmware/devicetree/base")})
+    {
+        QFile compatible(root + "/compatible");
+        if (compatible.open(QIODevice::ReadOnly))
+        {
+            for (const QByteArray &entry : compatible.readAll().split('\0'))
+                if (entry.startsWith("raspberrypi,"))
+                    return true;
+        }
+        QFile model(root + "/model");
+        if (model.open(QIODevice::ReadOnly) && model.readAll().startsWith("Raspberry Pi"))
+            return true;
+    }
+    return false;
+}
+
+SystemClock::SystemClock(QObject *parent, const QDBusConnection &bus,
+                         std::function<bool()> raspberryPiDetector)
+    : QObject(parent), bus_(bus), raspberryPiDetector_(raspberryPiDetector)
 {
 }
 
@@ -40,6 +62,16 @@ void SystemClock::setTime(QTime time)
         return;
     }
     time_ = QTime(time.hour(), time.minute(), 0);
+    if (!raspberryPiDetector_())
+    {
+        // Complete after the time picker has closed, like the real D-Bus path.
+        QTimer::singleShot(0, this, [this] {
+            complete(true, tr("Simulation: Uhrzeit würde auf %1 gesetzt.\n"
+                              "Auf diesem PC bleiben Systemzeit und NTP unverändert.")
+                           .arg(time_.toString("HH:mm")));
+        });
+        return;
+    }
     call("org.freedesktop.DBus.Properties", "Get", {service, QString("NTP")},
          [this](const QDBusMessage &reply) {
         if (reply.type() == QDBusMessage::ErrorMessage)
@@ -49,12 +81,12 @@ void SystemClock::setTime(QTime time)
             return;
         }
         if (reply.arguments().size() != 1
-            || !reply.arguments().first().canConvert<QDBusVariant>())
+            || !reply.arguments().constFirst().canConvert<QDBusVariant>())
         {
             complete(false, tr("Ungültige Antwort des Zeitdienstes."));
             return;
         }
-        const bool ntp = qvariant_cast<QDBusVariant>(reply.arguments().first()).variant().toBool();
+        const bool ntp = qvariant_cast<QDBusVariant>(reply.arguments().constFirst()).variant().toBool();
         if (!ntp)
         {
             applyTime();

@@ -5,6 +5,7 @@
 #include "globals.h"
 #include "music.h"
 #include "dialogsettimeoralarm.h"
+#include "dialogusermessage.h"
 #include "systemclock.h"
 #include <QApplication>
 #include <QMessageBox>
@@ -157,7 +158,11 @@ void DialogSettings::timeChanged(QTime time)
     connect(clock, &SystemClock::finished, this, [this](bool success, const QString &message) {
         ui->pushButtonTime->setEnabled(true);
         if (success)
-            QMessageBox::information(this, tr("Uhrzeit"), message);
+        {
+        //    QMessageBox::information(this, tr("Uhrzeit"), message);
+            GuiHelper::showModal(new DialogUserMessage(tr("Uhrzeit"), message, this));
+        }
+
         else
             QMessageBox::warning(this, tr("Uhrzeit"),
                                  message + tr("\nBitte die Berechtigungen für den Zeitdienst prüfen."));

@@ -10,8 +10,10 @@ class SystemClock : public QObject
 {
     Q_OBJECT
 public:
+    static bool isRaspberryPi();
     explicit SystemClock(QObject *parent = nullptr,
-                         const QDBusConnection &bus = QDBusConnection::systemBus());
+                         const QDBusConnection &bus = QDBusConnection::systemBus(),
+                         std::function<bool()> raspberryPiDetector = isRaspberryPi);
     void setTime(QTime time);
 
 signals:
@@ -19,6 +21,7 @@ signals:
 
 private:
     QDBusConnection bus_;
+    std::function<bool()> raspberryPiDetector_;
     QTime time_;
     bool busy_ = false;
     bool disabledNtp_ = false;

@@ -14,6 +14,9 @@ Benötigt werden Qt 5 Core, D-Bus und Test sowie `dbus-run-session`.
 Geprüft werden lokales Datum und Uhrzeit, die Sekunden- und UTC-Umrechnung,
 das vorherige Abschalten von NTP sowie Berechtigungsfehler und die
 Wiederherstellung einer zuvor aktiven Synchronisierung bei Fehlern.
+Der PC-Pfad wird zusätzlich geprüft: Er meldet eine Simulation, ohne einen
+Aufruf an den Zeitdienst zu senden. Die Raspberry-Pi-Erkennung wird für die
+Tests des echten Ablaufs gezielt simuliert; der D-Bus bleibt dabei ein Mock.
 Die Berechtigungen auf dem Raspberry Pi sind in `deployment/README.md` erklärt.
 
 Die Wischbedienung in `DialogSetTimeOrAlarm` lässt sich unabhängig testen:

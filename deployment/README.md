@@ -1,4 +1,10 @@
 Die manuelle Zeiteinstellung verwendet systemd-timedated über den System-D-Bus.
+Echte Änderungen werden nur auf einem Raspberry Pi ausgeführt. Die Erkennung
+liest `compatible` bzw. `model` aus `/proc/device-tree` oder
+`/sys/firmware/devicetree/base`. Auf einem PC (oder bei fehlender Erkennung)
+erscheint eine Simulationsmeldung mit der ausgewählten Uhrzeit; Systemzeit und
+NTP werden dort nicht verändert. Dafür ist keine Polkit-Regel nötig.
+
 Die App läuft als normaler Benutzer. Der Raspberry Pi benötigt systemd-timedated
 und Polkit; ein fehlender Dienst oder fehlende Rechte werden im Dialog gemeldet.
 

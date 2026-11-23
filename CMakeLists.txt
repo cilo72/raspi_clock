@@ -51,6 +51,7 @@ else()
 
             globals.h globals.cpp
             guihelper.h guihelper.cpp
+            dialogusermessage.h dialogusermessage.cpp dialogusermessage.ui
         )
     endif()
 endif()
