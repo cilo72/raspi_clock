@@ -6,6 +6,7 @@
 #include "music.h"
 #include "dialogsettimeoralarm.h"
 #include "dialogusermessage.h"
+#include "dialogwifi.h"
 #include "systemclock.h"
 #include <QApplication>
 #include <QMessageBox>
@@ -33,22 +34,11 @@ DialogSettings::DialogSettings(QWidget *parent)
 //    ui->labelMusicStatus->setText(directoryProvider_());
     ui->labelMusicStatus->setTextFormat(Qt::PlainText);
     incrementVolume();
-    //connect(ui->pushButtonWlan, &QPushButton::clicked, this, &FormSettings::onWifiRequest);
-
 }
 
 DialogSettings::~DialogSettings()
 {
     delete ui;
-}
-
-void DialogSettings::init(int volume)
-{
-    ui->pushButtonTest->setChecked(false);
-    ui->pushButtonTest->setText(tr("Musik testen"));
-    //ui->labelMusicStatus->setText(directoryProvider_());
-    volume_ = volume;
-    incrementVolume();
 }
 
 void DialogSettings::on_pushButtonVolumeDecrement_clicked()
@@ -159,13 +149,17 @@ void DialogSettings::timeChanged(QTime time)
         ui->pushButtonTime->setEnabled(true);
         if (success)
         {
-        //    QMessageBox::information(this, tr("Uhrzeit"), message);
-            GuiHelper::showModal(new DialogUserMessage(tr("Uhrzeit"), message, this));
+            GuiHelper::showModal(new DialogUserMessage(tr("Uhrzeit"), message, DialogUserMessage::IconType::Information, this));
         }
-
         else
-            QMessageBox::warning(this, tr("Uhrzeit"),
-                                 message + tr("\nBitte die Berechtigungen für den Zeitdienst prüfen."));
+        {
+            GuiHelper::showModal(new DialogUserMessage(tr("Uhrzeit"), message + "\nBitte die Berechtigungen für den Zeitdienst prüfen.", DialogUserMessage::IconType::Information, this));
+        }
     });
     clock->setTime(time);
+}
+
+void DialogSettings::on_pushButtonWlan_clicked()
+{
+    GuiHelper::showModal(new DialogWifi(this));
 }

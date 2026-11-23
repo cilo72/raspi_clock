@@ -1,6 +1,21 @@
 Die WLAN-Tests verwenden einen eigenen D-Bus mit einem simulierten NetworkManager.
 Sie ändern keine WLAN-Verbindungen des Rechners.
 
+Die aktuelle Alarmsteuerung und die Wiederholung der Wiedergabeliste lassen
+sich unabhängig von den älteren Alarmtests prüfen:
+
+```sh
+cmake -S tests/alarm_playback -B /tmp/clock-alarm-playback-tests
+cmake --build /tmp/clock-alarm-playback-tests
+ctest --test-dir /tmp/clock-alarm-playback-tests --output-on-failure
+```
+
+Die Tests verwenden temporäre Einstellungen und spielen kein Audio ab. Sie
+prüfen den automatischen Stopp, das Ende des Blinkens, den einmaligen
+Abschalttimer, erneutes Auslösen sowie manuelles Ausschalten. Nach dem
+automatischen Stopp bleibt der Wecker scharf; manuelles Ausschalten deaktiviert
+ihn. Die Wiedergabeliste springt nach dem letzten Titel zum ersten zurück.
+
 Die Systemzeittests verwenden einen eigenen D-Bus mit einem simulierten
 systemd-timedated. Sie ändern weder Systemzeit noch echte NTP-Einstellungen:
 

@@ -15,7 +15,6 @@ class DialogSettings : public QWidget
 public:
     explicit DialogSettings(QWidget *parent = nullptr);
     ~DialogSettings();
-    void init(int volume);
 
 private slots:
     void on_pushButtonVolumeDecrement_clicked();
@@ -31,6 +30,8 @@ private slots:
     void on_pushButtonTime_clicked();
 
     void timeChanged(QTime time);
+    void on_pushButtonWlan_clicked();
+
 private:
     Ui::DialogSettings *ui;
     int volume_;

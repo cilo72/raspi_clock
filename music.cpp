@@ -4,6 +4,7 @@
 #include <QFileInfo>
 #include <QStorageInfo>
 #include <QDirIterator>
+#include <QDebug>
 
 Music * Music::player()
 {
@@ -15,6 +16,7 @@ Music::Music()
     : player_(new QMediaPlayer(this))
     , alarmPlaylist_(new QMediaPlaylist(this))
 {
+    alarmPlaylist_->setPlaybackMode(QMediaPlaylist::Loop);
     connect(this, &Music::signal_start, this, &Music::on_start);
     connect(this, &Music::signal_stop, this, &Music::on_stop);
     connect(this, &Music::signal_volume, this, &Music::on_volume);
@@ -93,14 +95,12 @@ void Music::on_start(int volume)
         alarmPlaylist_->addMedia(QUrl::fromLocalFile(track));
     }
 
-    //if (alarmPlaylist_->isEmpty())
-    //{
-    //    qWarning() << "Keine lesbaren MP3-Dateien in" << directory;
-    //    if (alarmActive_)
-    //        ui->labelAlarmTime->setText(tr("Keine MP3 in %1").arg(directory));
-    //    //emit playbackError(tr("Keine lesbaren MP3-Dateien in %1").arg(directory));
-    //    return;
-    //}
+    if (alarmPlaylist_->isEmpty())
+    {
+        qWarning() << "Keine lesbaren MP3-Dateien in" << directory
+                   << "– verwende den Ersatzton.";
+        alarmPlaylist_->addMedia(QUrl(QStringLiteral("qrc:/mp3/beep.mp3")));
+    }
 
     // Start each alarm or preview with a newly shuffled order.
     alarmPlaylist_->shuffle();

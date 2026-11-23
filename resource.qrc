@@ -32,5 +32,7 @@
         <file>icons/wlan.png</file>
         <file>icons/wlan.svg</file>
     </qresource>
-    <qresource prefix="/"/>
+    <qresource prefix="/">
+        <file>mp3/beep.mp3</file>
+    </qresource>
 </RCC>

@@ -82,6 +82,7 @@ MainWindow::MainWindow(QWidget *parent)
     timeout();
     connect(timer_, &QTimer::timeout, this, &MainWindow::timeout);
     connect(timerPlayer_, &QTimer::timeout, this, &MainWindow::timeoutPlayer);
+    timerPlayer_->setSingleShot(true);
     update();
     timer_->start(1000);
 }
@@ -130,6 +131,7 @@ void MainWindow::on_pushButtonSetAlarm_clicked()
     {
         alarmArmed_ = false;
         alarmActive_ = false;
+        alarmStrong_ = false;
         timerPlayer_->stop();
         Music::player()->stop();        
     }
@@ -144,7 +146,11 @@ void MainWindow::on_pushButtonSetAlarm_clicked()
 
 void MainWindow::timeoutPlayer()
 {
+    timerPlayer_->stop();
+    alarmActive_ = false;
+    alarmStrong_ = false;
     Music::player()->stop();
+    update();
 }
 
 void MainWindow::on_alarmChanged(QTime newTime)

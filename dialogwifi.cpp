@@ -1,9 +1,9 @@
-#include "formwifi.h"
-#include "ui_formwifi.h"
+#include "dialogwifi.h"
+#include "ui_dialogwifi.h"
 #include <QtWidgets>
 
-FormWifi::FormWifi(WifiManager *manager, QWidget *parent)
-    : QWidget(parent), ui(new Ui::FormWifi), manager_(manager)
+DialogWifi::DialogWifi(QWidget *parent)
+    : QWidget(parent), ui(new Ui::DialogWifi), manager_(new WifiManager)
 {
     ui->setupUi(this);
     setStyleSheet("QWidget { background-color: #63452c; color: #e6e1c9; font-size: 18px; }"
@@ -91,10 +91,10 @@ FormWifi::FormWifi(WifiManager *manager, QWidget *parent)
     message_->setFixedHeight(42);
     message_->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Fixed);
     ui->verticalLayout->addWidget(message_);
-    connect(back, &QPushButton::clicked, this, [this, show] {
-        password_->clear(); show->setChecked(false);
-        if (pages_->currentIndex() == 1) pages_->setCurrentIndex(0); else emit onWifiExit();
-    });
+    connect(back, &QPushButton::clicked, this, [this, show]
+            {
+        close();
+            });
     connect(show, &QPushButton::toggled, this, [this](bool checked) { password_->setEchoMode(checked ? QLineEdit::Normal : QLineEdit::Password); });
     connect(shift, &QPushButton::clicked, this, [keyboard, shift] {
         keyboard->setCurrentIndex(keyboard->currentIndex() == 1 ? 0 : 1);
@@ -106,24 +106,29 @@ FormWifi::FormWifi(WifiManager *manager, QWidget *parent)
     connect(enable, &QPushButton::clicked, manager_, &WifiManager::enableWifi);
     connect(scan_, &QPushButton::clicked, manager_, &WifiManager::scan);
     connect(disconnect_, &QPushButton::clicked, manager_, &WifiManager::disconnectNetwork);
-    connect(select, &QPushButton::clicked, this, &FormWifi::selectNetwork);
+    connect(select, &QPushButton::clicked, this, &DialogWifi::selectNetwork);
     connect(networks_, &QListWidget::itemActivated, this, [this] { selectNetwork(); });
     connect(connect_, &QPushButton::clicked, this, [this, show] {
         manager_->connectNetwork(network_, password_->text());
         password_->clear(); show->setChecked(false); pages_->setCurrentIndex(0);
     });
     connect(password_, &QLineEdit::returnPressed, connect_, &QPushButton::click);
-    connect(manager_, &WifiManager::changed, this, &FormWifi::updateStatus);
+    connect(manager_, &WifiManager::changed, this, &DialogWifi::updateStatus);
     connect(manager_, &WifiManager::message, message_, &QLabel::setText);
     updateStatus();
 }
-FormWifi::~FormWifi() { delete ui; }
-void FormWifi::init()
+DialogWifi::~DialogWifi()
+{
+    delete manager_;
+    delete ui;
+}
+
+void DialogWifi::init()
 {
     password_->clear(); password_->setEchoMode(QLineEdit::Password);
     pages_->setCurrentIndex(0); message_->clear(); manager_->refresh(); updateStatus();
 }
-void FormWifi::updateStatus()
+void DialogWifi::updateStatus()
 {
     status_->setText(manager_->status());
     scan_->setEnabled(!manager_->busy());
@@ -131,7 +136,7 @@ void FormWifi::updateStatus()
     disconnect_->setEnabled(!manager_->busy() && manager_->strength() >= 0);
     updateNetworks();
 }
-void FormWifi::updateNetworks()
+void DialogWifi::updateNetworks()
 {
     QString selectedPath;
     if (networks_->currentRow() >= 0 && networks_->currentRow() < displayed_.size()) selectedPath = displayed_.at(networks_->currentRow()).path;
@@ -142,7 +147,7 @@ void FormWifi::updateNetworks()
         if (n.path == selectedPath) networks_->setCurrentRow(networks_->count() - 1);
     }
 }
-void FormWifi::selectNetwork()
+void DialogWifi::selectNetwork()
 {
     const int row = networks_->currentRow();
     if (manager_->busy() || row < 0 || row >= displayed_.size()) return;

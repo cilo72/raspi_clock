@@ -6,13 +6,13 @@ class QListWidget;
 class QLineEdit;
 class QPushButton;
 class QStackedWidget;
-namespace Ui { class FormWifi; }
-class FormWifi : public QWidget
+namespace Ui { class DialogWifi; }
+class DialogWifi : public QWidget
 {
     Q_OBJECT
 public:
-    explicit FormWifi(WifiManager *manager, QWidget *parent = nullptr);
-    ~FormWifi();
+    explicit DialogWifi(QWidget *parent = nullptr);
+    ~DialogWifi();
     void init();
 signals:
     void onWifiExit();
@@ -20,7 +20,7 @@ private:
     void updateStatus();
     void updateNetworks();
     void selectNetwork();
-    Ui::FormWifi *ui;
+    Ui::DialogWifi *ui;
     WifiManager *manager_;
     QLabel *status_, *message_, *selected_;
     QListWidget *networks_;

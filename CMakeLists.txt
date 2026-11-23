@@ -24,7 +24,7 @@ dialogsetalarm.h dialogsetalarm.cpp dialogsetalarm.ui
 
         music.h music.cpp
         systemclock.h systemclock.cpp
-        formwifi.h formwifi.cpp formwifi.ui
+        dialogwifi.h dialogwifi.cpp dialogwifi.ui
         wifimanager.h wifimanager.cpp
 )
 
