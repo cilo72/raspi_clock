@@ -6,8 +6,8 @@ QTime Globals::alarm_ = QTime(6, 2);
 int Globals::volume_ = 80;
 
 static const char * iniFileName = "clock.ini";
-static const char * KEY_ALARM = "main/alarm_time";
-static const char * KEY_VOLUME     = "main/volume";
+static const char * KEY_ALARM   = "main/alarm_time";
+static const char * KEY_VOLUME  = "main/volume";
 static const char * KEY_ALARM_1 = "set_alarm_time/alarm_time1";
 static const char * KEY_ALARM_2 = "set_alarm_time/alarm_time2";
 static const char * KEY_ALARM_3 = "set_alarm_time/alarm_time3";

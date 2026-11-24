@@ -31,8 +31,6 @@ DialogSettings::DialogSettings(QWidget *parent)
 {
     ui->setupUi(this);
     volume_ = Globals::volume();
-//    ui->labelMusicStatus->setText(directoryProvider_());
-    ui->labelMusicStatus->setTextFormat(Qt::PlainText);
     incrementVolume();
 }
 
@@ -115,7 +113,6 @@ void DialogSettings::on_pushButtonTest_clicked()
     if (ui->pushButtonTest->isChecked())
     {
         ui->pushButtonTest->setText(tr("Test stoppen"));
-        //ui->labelMusicStatus->setText(directoryProvider_());
         Music::player()->start(volume_);
     }
     else
@@ -124,13 +121,6 @@ void DialogSettings::on_pushButtonTest_clicked()
         Music::player()->stop();
     }
 }
-
-//void DialogSettings::onPlaybackError(const QString &message)
-//{
-//    ui->pushButtonTest->setChecked(false);
-//    ui->pushButtonTest->setText(tr("Musik testen"));
-//    ui->labelMusicStatus->setText(message);
-//}
 
 void DialogSettings::on_pushButtonTime_clicked()
 {

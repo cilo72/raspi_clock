@@ -32,7 +32,3 @@ private slots:
     void on_volume(int volume);
 };
 
-// Use the root of a mounted USB drive, or ~/Music when none is available.
-//QString musicDirectory();
-//
-//QString musicDirectoryFromUsbMounts(QStringList mountPaths);

@@ -62,10 +62,6 @@ QPushButton:pressed {
 }
 )V0G0N";
 
-//static const char * KEY_ALARM_TIME = "main/alarm_time";
-//static const char * KEY_VOLUME     = "main/volume";
-
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)

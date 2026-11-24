@@ -27,7 +27,6 @@ private slots:
     void on_alarmChanged(QTime newTime);
 
 private:
-    friend class AlarmPlaybackTest;
     Ui::MainWindow *ui;
     QTimer * timer_;
     QTimer * timerPlayer_;
